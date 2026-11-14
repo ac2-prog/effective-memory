@@ -1,7 +1,7 @@
 """Headless check of dashboard.py with Streamlit's own AppTest (no browser needed)."""
 from streamlit.testing.v1 import AppTest
 
-at = AppTest.from_file("dashboard.py", default_timeout=120).run()
+at = AppTest.from_file("../dashboard.py", default_timeout=120).run()
 assert not at.exception, at.exception
 print("TABS:", [t.label for t in at.tabs])
 print("SUBHEADERS:", [s.value for s in at.subheader])

@@ -19,7 +19,7 @@ jobs:
       - name: Install
         run: pip install -r requirements.txt playwright && python -m playwright install --with-deps chromium
       - name: AppTest (all tabs, every model, several thresholds)
-        run: python tests/apptest_check.py 2>&1 | tee apptest.txt
+        run: set -o pipefail; python tests/apptest_check.py 2>&1 | tee apptest.txt
       - name: Screenshots
         if: always()
         run: |

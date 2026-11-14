@@ -121,8 +121,9 @@ with t1:
                      use_container_width=True, hide_index=True)
         first, last = stay.iloc[0], stay.iloc[-1]
         notes(f'The observed rate is {first.early_readmission_rate:.2%} for {int(first.time_in_hospital)}-day stays '
-              f'and {last.early_readmission_rate:.2%} for {int(last.time_in_hospital)}-day stays; longer stays tend '
-              'to be associated with higher early-readmission rates.',
+              f'and {last.early_readmission_rate:.2%} for {int(last.time_in_hospital)}-day stays. Rates rise fairly '
+              'steadily up to about 10 days and then fluctuate, so the overall pattern is an association between '
+              'longer stays and higher early-readmission rates, not a smooth trend.',
               'Length of stay is known only at discharge and is strongly linked to illness severity, so this is '
               'not evidence that longer stays cause readmission. Long-stay groups contain fewer encounters.',
               'outputs/eda_extended/eda_time_in_hospital_summary.csv, fig_stay_rate.png (eda_quality_audit.py)')

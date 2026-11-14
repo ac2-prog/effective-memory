@@ -1,4 +1,4 @@
-"""Executable interactive portfolio dashboard. Run: streamlit run dashboard.py"""
+"""Executable interactive portfolio dashboard. Run: streamlit run dashboard.py. Author: Karina Roade"""
 from pathlib import Path
 import pandas as pd
 import streamlit as st

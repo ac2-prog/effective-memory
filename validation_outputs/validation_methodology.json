@@ -1,0 +1,20 @@
+{
+  "n_original_encounters": 101766,
+  "n_unique_patients": 71518,
+  "n_training_encounters": 81613,
+  "n_test_encounters": 20153,
+  "training_test_patient_overlap": 0,
+  "target_mapping": {
+    "<30": 1,
+    ">30": 0,
+    "NO": 0
+  },
+  "positive_rate_original": 0.11159915885462728,
+  "validation": "StratifiedGroupKFold 3 folds, on training set only",
+  "leakage_cautions": [
+    "discharge_disposition_id may be determined only at discharge; check prediction timing",
+    "admission_source_id may not be available for every intended use case",
+    "splitting by patient is not the same as hospital/time external validation",
+    "do not choose hyperparameters or thresholds on held-out test outcomes"
+  ]
+}

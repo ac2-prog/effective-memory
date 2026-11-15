@@ -1,0 +1,49 @@
+# Temporary: execute the notebook in Jupyter and commit it with outputs (removed before merging).
+name: nb-run
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install -r requirements.txt nbconvert ipykernel
+      - name: Execute notebook
+        run: |
+          set -o pipefail
+          jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=1800 RISKY_workbook.ipynb 2>&1 | tail -3 | tee log.txt
+          python - <<'PY' | tee -a log.txt
+          import json
+          nb = json.load(open('RISKY_workbook.ipynb'))
+          code = [c for c in nb['cells'] if c['cell_type'] == 'code']
+          errs = sum(1 for c in code for o in c['outputs'] if o['output_type'] == 'error')
+          print(f'code cells executed: {sum(1 for c in code if c["execution_count"])}/{len(code)}; errors: {errs}')
+          for c in code:
+              for o in c['outputs']:
+                  for line in ''.join(o.get('text', '')).splitlines():
+                      if line.startswith(('Matches', 'Encounters')): print(line)
+          PY
+      - name: Commit executed notebook
+        run: |
+          git config user.name "ac2-prog"
+          git config user.email "332074517+ac2-prog@users.noreply.github.com"
+          git checkout -- data outputs || true
+          git add RISKY_workbook.ipynb
+          git commit -m "Executed notebook with all outputs" || echo "nothing to commit"
+          git push origin HEAD:${{ github.head_ref }}
+      - name: Comment
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          { echo '### Notebook run'; echo "Job status: ${{ job.status }}"; echo '```'; cat log.txt; echo '```'; } > body.md
+          gh pr comment ${{ github.event.pull_request.number }} --body-file body.md

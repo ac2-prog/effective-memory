@@ -2,5 +2,6 @@ step,detail
 """?"" converted to missing","192,849 cells now missing"
 "gender ""Unknown/Invalid"" recoded as missing",3 encounters
 weight column dropped,96.86% missing
-binary target added (<30 = 1; >30 and NO = 0),"11,357 positives (11.16%)"
-duplicate checks,"0 duplicate rows; 0 duplicate encounter IDs; 71,518 distinct patients (repeat patients handled by a patient-grouped split)"
+encounters ending in death removed (readmission impossible),"1,652 encounters removed; 100,114 remain"
+binary target added (<30 = 1; >30 and NO = 0),"11,357 positives (11.34%)"
+duplicate checks,"0 duplicate rows; 0 duplicate encounter IDs; 70,439 distinct patients (repeat patients handled by a patient-grouped split)"

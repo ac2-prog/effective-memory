@@ -76,7 +76,8 @@ with t1:
               'Weight is excluded from modelling; other gaps are imputed inside the training pipelines, fitted on '
               'training data only. "None" in the glucose-serum and HbA1c columns means the test was not performed '
               'and is kept as a category, not counted as missing. Three gender values coded "Unknown/Invalid" are '
-              'treated as missing.',
+              'treated as missing. The 1,652 encounters that ended in the patient\'s death are excluded from the '
+              'patterns and models, because readmission is impossible for them; hospice discharges are kept.',
               'Missingness is unlikely to be random (for example, specialty or payer may be recorded differently '
               'between hospitals), so imputation may introduce bias.',
               'outputs/eda_extended/data_quality_by_variable.csv, quality_overview.csv, fig_missingness.png '

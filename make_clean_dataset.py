@@ -2,7 +2,7 @@
 
 Run from the project folder:  python make_clean_dataset.py
 Input : data/diabetic_data.csv          (original UCI file, 101,766 encounters x 50 columns)
-Output: data/diabetic_data_cleaned.csv  (cleaned file, same encounters)
+Output: data/diabetic_data_cleaned.csv  (cleaned file, 100,114 encounters)
         outputs/cleaning_log.csv        (what each cleaning step changed)
 
 Cleaning steps (identical to the ones applied inside train_models.py):
@@ -11,7 +11,11 @@ Cleaning steps (identical to the ones applied inside train_models.py):
      category, so pandas' default conversion of the text "None" to NaN is switched off.
   3. gender "Unknown/Invalid" (3 encounters) is recoded as missing.
   4. weight is dropped: 96.86% of its values are missing.
-  5. The binary target early_readmission is added: 1 if readmitted == "<30", else 0.
+  5. Encounters ending in the patient's death (discharge_disposition_id 11, 19, 20, 21; 1,652 encounters)
+     are removed: readmission is impossible, so they would be labelled 'no readmission' by
+     construction (none was readmitted). Hospice discharges (13, 14) are kept because 43 of 771
+     (5.6%) were readmitted within 30 days. Strack et al. (2014) excluded both groups.
+  6. The binary target early_readmission is added: 1 if readmitted == "<30", else 0.
      The original three-class column readmitted is kept for reference.
 
 Imputation is NOT done here on purpose. Filling missing values using the whole dataset would
@@ -25,6 +29,7 @@ ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / 'data' / 'diabetic_data.csv'
 CLEAN = ROOT / 'data' / 'diabetic_data_cleaned.csv'
 LOG = ROOT / 'outputs' / 'cleaning_log.csv'
+DECEASED = [11, 19, 20, 21]
 
 
 def load_raw(path=SOURCE):
@@ -45,6 +50,11 @@ def clean(df):
     weight_missing = df['weight'].isna().mean() * 100
     df = df.drop(columns=['weight'])
     log.append({'step': 'weight column dropped', 'detail': f'{weight_missing:.2f}% missing'})
+
+    gone = df['discharge_disposition_id'].isin(DECEASED)
+    df = df[~gone].reset_index(drop=True)
+    log.append({'step': 'encounters ending in death removed (readmission impossible)',
+                'detail': f'{int(gone.sum()):,} encounters removed; {len(df):,} remain'})
 
     df['early_readmission'] = (df['readmitted'] == '<30').astype('int8')
     log.append({'step': 'binary target added (<30 = 1; >30 and NO = 0)',

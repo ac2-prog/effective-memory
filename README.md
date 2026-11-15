@@ -6,7 +6,7 @@ Predicting whether a diabetic hospital encounter is followed by readmission with
 Diabetes 130-US Hospitals dataset (UCI Machine Learning Repository; Strack et al., 2014).
 
 * **Response variable:** one column, `readmitted`, with three classes (`<30`, `>30`, `NO`).
-* **Modelled target:** binary `early_readmission` = 1 if `readmitted == "<30"`, otherwise 0 (11.16% positive).
+* **Modelled target:** binary `early_readmission` = 1 if `readmitted == "<30"`, otherwise 0 (11.34% positive among the 100,114 analysed encounters).
 * **Models:** Logistic Regression, Random Forest, HistGradientBoostingClassifier (scikit-learn).
 * **Live dashboard:** https://risky-readmission.onrender.com/
 
@@ -37,7 +37,7 @@ numbers match the files in `outputs/`. Open it from this folder and choose *Run 
 
 ```
 data/diabetic_data.csv            original dataset (101,766 encounters x 50 columns)
-data/diabetic_data_cleaned.csv    cleaned dataset produced by make_clean_dataset.py
+data/diabetic_data_cleaned.csv    cleaned dataset produced by make_clean_dataset.py (100,114 encounters)
 make_clean_dataset.py             cleaning rules (shared by the notebook)
 train_models.py                   split, pipelines, training, test-set evaluation
 extend_evaluation.py              threshold sensitivity and reliability diagram
@@ -52,6 +52,7 @@ outputs/, validation_outputs/     generated results (do not edit by hand)
 
 * `?` is treated as missing; `None` in `max_glu_serum` and `A1Cresult` means "test not performed" and is kept as a category.
 * `weight` (96.86% missing) is dropped; three `Unknown/Invalid` gender values are treated as missing.
+* The 1,652 encounters that ended in the patient's death are removed (readmission is impossible); hospice discharges are kept because 5.6% of them were readmitted within 30 days. Strack et al. (2014) excluded both groups.
 * The train/test split is grouped by patient (`patient_nbr`), so no patient appears in both sets.
 * Imputation, scaling and encoding are fitted inside scikit-learn pipelines on training data only.
 * Results are reported at the default 0.50 threshold; other thresholds are explored descriptively only.

@@ -1,15 +1,15 @@
 {
-  "n_original_encounters": 101766,
-  "n_unique_patients": 71518,
-  "n_training_encounters": 81613,
-  "n_test_encounters": 20153,
+  "n_original_encounters": 100114,
+  "n_unique_patients": 70439,
+  "n_training_encounters": 80039,
+  "n_test_encounters": 20075,
   "training_test_patient_overlap": 0,
   "target_mapping": {
     "<30": 1,
     ">30": 0,
     "NO": 0
   },
-  "positive_rate_original": 0.11159915885462728,
+  "positive_rate_original": 0.11344067762750465,
   "validation": "StratifiedGroupKFold 3 folds, on training set only",
   "leakage_cautions": [
     "discharge_disposition_id may be determined only at discharge; check prediction timing",

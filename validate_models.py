@@ -25,6 +25,12 @@ df=pd.read_csv(SOURCE,na_values=['?'],keep_default_na=False,low_memory=False)
 assert len(df)==101766
 # 3 encounters coded 'Unknown/Invalid' in gender are treated as missing (imputed in-pipeline).
 df['gender']=df['gender'].replace('Unknown/Invalid',np.nan)
+# Encounters ending in the patient's death cannot be followed by a readmission (0 of 1,652 were
+# readmitted), so they are excluded. discharge_disposition_id codes 11, 19, 20, 21 = Expired.
+# Hospice discharges (13, 14) are kept: 43 of 771 (5.6%) were readmitted within 30 days.
+# Strack et al. (2014) excluded both groups; only the logically impossible cases are removed here.
+DECEASED = [11, 19, 20, 21]
+df=df[~df['discharge_disposition_id'].isin(DECEASED)].reset_index(drop=True)
 assert set(df['readmitted'].dropna().unique())=={'<30','>30','NO'}
 y=(df['readmitted']=='<30').astype(int)
 excluded={'readmitted','encounter_id','patient_nbr','weight'}

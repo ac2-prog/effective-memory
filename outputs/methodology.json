@@ -1,9 +1,9 @@
 {
-  "data_rows": 101766,
-  "train_rows": 81613,
-  "test_rows": 20153,
-  "train_positive_rate": 0.11280065675811451,
-  "test_positive_rate": 0.10673348881059892,
+  "data_rows": 100114,
+  "train_rows": 80039,
+  "test_rows": 20075,
+  "train_positive_rate": 0.1130948662527018,
+  "test_positive_rate": 0.11481942714819428,
   "target": "1 if readmitted is <30; otherwise 0",
   "split": "GroupShuffleSplit by patient_nbr, random_state=42",
   "excluded_features": [

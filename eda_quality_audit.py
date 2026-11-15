@@ -40,6 +40,14 @@ summary=pd.DataFrame([{'stage':'Raw CSV','rows':len(raw),'columns':len(raw.colum
 {'stage':'After ? mapped to NaN and binary target derived','rows':len(df),'columns':len(df.columns),'questionmark_placeholders':0,'missing_cells':int(df.isna().sum().sum()),'full_duplicate_rows':int(df.drop(columns=['early_readmission']).duplicated().sum()),'duplicate_encounter_ids':int(df['encounter_id'].duplicated().sum()),'distinct_patients':int(df['patient_nbr'].nunique())}])
 summary.to_csv(OUT/'quality_overview.csv',index=False)
 
+# Encounters ending in the patient's death cannot be followed by a readmission (0 of 1,652 were
+# readmitted), so they are excluded. discharge_disposition_id codes 11, 19, 20, 21 = Expired.
+# Hospice discharges (13, 14) are kept: 43 of 771 (5.6%) were readmitted within 30 days.
+# Strack et al. (2014) excluded both groups; only the logically impossible cases are removed here.
+DECEASED = [11, 19, 20, 21]
+excluded=int(df['discharge_disposition_id'].isin(DECEASED).sum())
+df=df[~df['discharge_disposition_id'].isin(DECEASED)].reset_index(drop=True)
+
 # Transparent descriptive tables with group sample sizes, no predictive leakage.
 def group_table(col):
     t=df.groupby(col,dropna=False,observed=True)['early_readmission'].agg(['size','sum','mean']).reset_index()
@@ -78,5 +86,6 @@ print(summary.to_string(index=False))
 print('\nMISSINGNESS TOP 10')
 print(quality[['variable','questionmark_placeholders','percent_missing_after']].head(10).to_string(index=False))
 print('\nGender Unknown/Invalid recoded to missing:',unknown_gender)
+print('Deceased-patient encounters excluded from the descriptive patterns:',excluded,'| analysed:',len(df))
 print('\nBINARY TARGET',df['early_readmission'].value_counts().to_dict())
 print('\nOUTPUT',OUT)

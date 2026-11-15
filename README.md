@@ -12,7 +12,7 @@ Diabetes 130-US Hospitals dataset (UCI Machine Learning Repository; Strack et al
 
 ## Requirements
 
-Python 3.10 or later and the packages in `requirements.txt`:
+Python 3.13 and the packages in `requirements.txt`:
 
 ```
 pip install -r requirements.txt

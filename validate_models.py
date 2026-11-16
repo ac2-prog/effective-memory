@@ -1,4 +1,4 @@
-"""Reproducible additional *training-only* patient-group cross validation for RISKY.
+"""Reproducible additional *training-only* patient-group cross validation for RISKY. Author: Karina Roade
 
 Run: python validate_models.py
 This script does not overwrite the main RISKY test predictions or public dashboard.

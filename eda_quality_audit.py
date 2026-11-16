@@ -1,4 +1,4 @@
-"""Supplementary RISKY EDA and transparent data-quality audit. Author Karina Roade.
+"""Supplementary RISKY EDA and transparent data-quality audit. Author: Karina Roade
 Run in the RISKY project root with: python eda_quality_audit.py
 Do not interpret observational group differences as causal effects.
 The model training pipelines in train_models.py remain the source of fitted imputations.

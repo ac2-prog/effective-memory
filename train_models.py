@@ -1,4 +1,4 @@
-"""RISKY: transparent, reproducible binary 30-day readmission modelling.
+"""RISKY: transparent, reproducible binary 30-day readmission modelling. Author: Karina Roade
 Run from this folder: python train_models.py
 Outputs are generated from the real dataset, not manually entered.
 Author: Karina Roade

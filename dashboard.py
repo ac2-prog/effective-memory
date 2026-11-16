@@ -177,8 +177,9 @@ with t3:
 # ---------------------------------------------------------------- Calibration
 with t4:
     st.subheader('Calibration of predicted probabilities (held-out test set)')
-    st.warning('Probability calibration has **not** been performed. This section only assesses how well the raw, '
-               'uncalibrated probabilities match observed outcomes.')
+    st.info('This section evaluates how well each model\'s predicted probabilities match observed readmission '
+            'rates, using a reliability diagram and Brier scores. Recalibrating the probabilities (for example, '
+            'Platt or isotonic scaling) is identified as the next step for future work.')
     show_image(OUT / 'model_calibration.png')
     notes('Gradient Boosting\'s points lie close to the diagonal, so its probabilities are roughly in line with '
           'observed rates. Logistic Regression and Random Forest lie well below it: they predict much higher risk '

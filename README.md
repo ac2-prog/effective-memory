@@ -38,12 +38,13 @@ numbers match the files in `outputs/`. Open it from this folder and choose *Run 
 ```
 data/diabetic_data.csv            original dataset (101,766 encounters x 50 columns)
 data/diabetic_data_cleaned.csv    cleaned dataset produced by make_clean_dataset.py (100,114 encounters)
+data/IDS_mapping.csv              code descriptions from UCI (e.g. discharge_disposition_id 11 = Expired)
 make_clean_dataset.py             cleaning rules (shared by the notebook)
 train_models.py                   split, pipelines, training, test-set evaluation
 extend_evaluation.py              threshold sensitivity and reliability diagram
 eda_quality_audit.py              data-quality audit and extended EDA
 validate_models.py                patient-grouped cross-validation on the training set
-dashboard.py                      Streamlit dashboard
+dashboard.py                      Streamlit dashboard (Dataset & EDA, Model comparison, Threshold exploration, Calibration)
 RISKY_workbook.ipynb              executed notebook with all outputs
 outputs/, validation_outputs/     generated results (do not edit by hand)
 ```
@@ -53,7 +54,12 @@ outputs/, validation_outputs/     generated results (do not edit by hand)
 * `?` is treated as missing; `None` in `max_glu_serum` and `A1Cresult` means "test not performed" and is kept as a category.
 * `weight` (96.86% missing) is dropped; three `Unknown/Invalid` gender values are treated as missing.
 * The 1,652 encounters that ended in the patient's death are removed (readmission is impossible); hospice discharges are kept because 5.6% of them were readmitted within 30 days. Strack et al. (2014) excluded both groups.
+* 14 encounters (13 patients) recorded after an encounter coded as death are retained and flagged as a data-quality limitation: the dataset has no dates, so the erroneous record cannot be identified (see the notebook, section 4).
 * The train/test split is grouped by patient (`patient_nbr`), so no patient appears in both sets.
 * Imputation, scaling and encoding are fitted inside scikit-learn pipelines on training data only.
 * Results are reported at the default 0.50 threshold; other thresholds are explored descriptively only.
 * Probabilities are not recalibrated. This is an academic analysis, not a clinical tool.
+
+## Second analytical tool
+
+The cleaned dataset was also analysed in Tableau Public (early-readmission rate by prior inpatient visits, age band and length of stay). Tableau reproduced the Python EDA results exactly. See Appendix I of the report.

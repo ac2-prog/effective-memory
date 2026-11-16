@@ -1,4 +1,4 @@
-# RISKY: 30-day hospital readmission (QH0636 Data Science resit)
+# RISKY: 30-day hospital readmission (QH0636 Data Science)
 
 Author: Karina Roade
 

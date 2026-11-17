@@ -54,7 +54,7 @@ outputs/, validation_outputs/     generated results (do not edit by hand)
 * `?` is treated as missing; `None` in `max_glu_serum` and `A1Cresult` means "test not performed" and is kept as a category.
 * `weight` (96.86% missing) is dropped; three `Unknown/Invalid` gender values are treated as missing.
 * The 1,652 encounters that ended in the patient's death are removed (readmission is impossible); hospice discharges are kept because 5.6% of them were readmitted within 30 days. Strack et al. (2014) excluded both groups.
-* 14 encounters (13 patients) recorded after an encounter coded as death are retained and flagged as a data-quality limitation: the dataset has no dates, so the erroneous record cannot be identified (see the notebook, section 4).
+* 14 encounters (13 patients) whose identifiers are later than that of an encounter coded as death are retained and documented as a data-quality limitation: the dataset has no dates and encounter identifiers are not reliable timestamps, so this indicates a possible chronological inconsistency rather than a confirmed error or a readmission after death (see the notebook, section 4).
 * The train/test split is grouped by patient (`patient_nbr`), so no patient appears in both sets.
 * Imputation, scaling and encoding are fitted inside scikit-learn pipelines on training data only.
 * Results are reported at the default 0.50 threshold; other thresholds are explored descriptively only.
